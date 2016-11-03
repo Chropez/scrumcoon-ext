@@ -1,0 +1,38 @@
+{
+  "name": "Scrumcoon",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Scrumcoon ext",
+  "homepage_url": "http://google.se",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "storage",
+    "tabs",
+    "https://trello.com/*/*",
+    "https://scumcoon.firebaseapp.com/*/*"
+  ],
+
+  "content_scripts": [{
+    "matches": ["https://trello.com/*/*"],
+    "js": [
+      "bower_components/firebase/firebase.js",
+      "bower_components/firebase/firebase-app.js",
+      "bower_components/firebase/firebase-database.js",
+      "bower_components/jquery/dist/jquery.min.js",
+      "src/content-scripts/firebaseapp.js",
+      "src/content-scripts/main.js"
+    ],
+    "css": ["src/content-scripts/main.css"]
+  }],
+
+  "web_accessible_resources": [
+    "src/*"
+  ],
+
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+
+}

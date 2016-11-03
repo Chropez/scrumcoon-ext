@@ -1,0 +1,19 @@
+body.show-scrumcoon .window-overlay {
+  width:50% !important;
+}
+#scrumcoon-container::before {
+  background-color: rgba(255,255,255,.5); // Added only to show overlay, can be removed
+  content: '';
+  position: absolute;
+  z-index: 2;
+  box-shadow: inset 0px 11px 8px -10px black, inset 0px -11px 8px -10px black;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.scrumcoon-title-button {
+  
+}

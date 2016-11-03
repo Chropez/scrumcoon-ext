@@ -1,0 +1,28 @@
+{
+  "name": "JournalenCoon",
+  "version": "0.0.4",
+  "description": "JournalenCoon extension",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node bin/run-build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Chropez/JournalenCoon.git"
+  },
+  "keywords": [
+    "Chrome",
+    "Extension",
+    "Journalen"
+  ],
+  "author": "Christopher Lopez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Chropez/JournalenCoon/issues"
+  },
+  "homepage": "https://github.com/Chropez/JournalenCoon",
+  "dependencies": {
+    "archiver": "^1.1.0"
+  }
+}
