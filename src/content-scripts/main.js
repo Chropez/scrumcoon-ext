@@ -9,12 +9,43 @@ class Main {
   }
 
   init() {
+    this.listenRoutes();
     this.setBoardName();
-    this.appendMainButton();
-    this.appendItemButton();
-    this.initIFrame();
 
     this.firebaseApp = new FirebaseApp(this.boardName);
+  }
+
+  listenRoutes() {
+    this.location = '';
+    setInterval(() => {
+      if (location.href !== this.location) {
+        this.location = location.href;
+        if (!this.mainButtonIsAppended() && (this.isBoardRoute() || this.isCardRoute())) {
+          this.appendMainButton();
+          this.initIFrame();
+        }
+
+        if (!this.cardButtonIsAppended() && this.isCardRoute()) {
+          this.appendCardButton();
+        }
+      }
+    }, 500);
+  }
+
+  isBoardRoute() {
+    return this.location.indexOf('https://trello.com/b/') >= 0;
+  }
+
+  isCardRoute() {
+    return this.location.indexOf('https://trello.com/c/') >= 0;
+  }
+
+  mainButtonIsAppended() {
+    return $('.scrumcoon-button').length > 0;
+  }
+
+  cardButtonIsAppended() {
+    return $('.window-wrapper .scrumcoon-title-button').length > 0;
   }
 
   appendMainButton() {
@@ -49,16 +80,9 @@ class Main {
     $('<link rel="stylesheet" type="text/css" href="' + a + '" >').appendTo('head');
   }
 
-  appendItemButton() {
-    $('.list-card').on('click', () => {
-      this.appendButton();
-    });
-  }
-
-  appendButton() {
+  appendCardButton() {
     let module = $('<div class="window-module u-clearfix"></div>')
       .html(this.generateSidebarModule());
-    debugger;
     module.prependTo($('.window-wrapper .window-sidebar'));
     $('.scrumcoon-title-button', module)
       .on('click', () => {
