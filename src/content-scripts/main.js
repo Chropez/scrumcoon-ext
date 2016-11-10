@@ -6,50 +6,50 @@ class Main {
   constructor() {
     this._iFrame = undefined;
     this.boardName = '';
+    this.location = '';
   }
 
   init() {
     this.listenRoutes();
-    this.setBoardName();
-
-    this.firebaseApp = new FirebaseApp(this.boardName);
+    this.firebaseApp = new FirebaseApp();
   }
 
   listenRoutes() {
-    this.location = '';
     setInterval(() => {
-      if (location.href !== this.location) {
-        this.location = location.href;
-        if (!this.mainButtonIsAppended() && (this.isBoardRoute() || this.isCardRoute())) {
-          this.appendMainButton();
-          this.initIFrame();
-        }
-
-        if (!this.cardButtonIsAppended() && this.isCardRoute()) {
-          this.appendCardButton();
-        }
+      if (!this.mainButtonIsAppended && this.isBoardRoute) {
+        this.setBoardName();
+        this.appendMainButton();
+      } else if (this.isCardRoute && this.mainButtonIsAppended && !this.cardButtonIsAppended) {
+        this.appendCardButton();
       }
+
+      this.location = location.href;
     }, 500);
   }
 
-  isBoardRoute() {
+  get localtionChanged() {
+    return location.href !== this.location;
+  }
+
+  get isBoardRoute() {
     return this.location.indexOf('https://trello.com/b/') >= 0;
   }
 
-  isCardRoute() {
+  get isCardRoute() {
     return this.location.indexOf('https://trello.com/c/') >= 0;
   }
 
-  mainButtonIsAppended() {
+  get mainButtonIsAppended() {
     return $('.scrumcoon-button').length > 0;
   }
 
-  cardButtonIsAppended() {
+  get cardButtonIsAppended() {
     return $('.window-wrapper .scrumcoon-title-button').length > 0;
   }
 
   appendMainButton() {
     let toolbar = $('.header-user');
+
     $('<a></a>')
       .addClass('scrumcoon-button')
       .addClass('header-btn')
@@ -59,9 +59,22 @@ class Main {
         this.toggleScrumcoon();
       })
       .appendTo(toolbar);
+
+      let css = chrome.extension.getURL('src/content-scripts/trello.css');
+      $(`<link rel="stylesheet" type="text/css" href="${css}" >`).appendTo('head');
+
+    $(`<div id="close-scrumcoon">&gt;</div>`)
+      .appendTo('body')
+      .on('click', () => { this.toggleScrumcoon(false); })
+
   }
 
   toggleScrumcoon(show) {
+    // load iframe the first toggle
+    if ($('#scrumcoon-container').length === 0) {
+      this.initIFrame();
+    }
+
     $('body').toggleClass('show-scrumcoon', show);
   }
 
@@ -74,10 +87,6 @@ class Main {
      scrolling: 'yes',
     }).appendTo(container);
 
-    //$('body').addClass('show-scrumcoon');
-
-    var a = chrome.extension.getURL('src/content-scripts/trello.css');
-    $('<link rel="stylesheet" type="text/css" href="' + a + '" >').appendTo('head');
   }
 
   appendCardButton() {
@@ -108,9 +117,12 @@ class Main {
   }
 
   setBoardName() {
-    let metaContent = $('meta[name="apple-itunes-app"]').attr('content');
-    let urlSegments = metaContent.substr(metaContent.indexOf('https://trello.com')).split('/');
+    if (!this.isBoardRoute)
+      return;
+
+    let urlSegments = this.location.substr(this.location.indexOf('https://trello.com')).split('/');
     this.boardName = urlSegments[urlSegments.length-1];
+    this.firebaseApp.session = this.boardName;
   }
 }
 

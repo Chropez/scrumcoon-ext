@@ -1,23 +1,21 @@
 {
   "name": "Scrumcoon-trello",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "manifest_version": 2,
-  "description": "Scrumcoon ext",
-  "homepage_url": "http://google.se",
+  "description": "An extension to help scrumteams play planning poker on trello cards",
+  "homepage_url": "https://chrome.google.com/webstore/detail/scrumcoon-trello/aepkpdjaenhlokmepnimkgfmlechonlc",
   "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "16": "icons/icon-sc-16.png",
+    "48": "icons/icon-sc-48.png",
+    "128": "icons/icon-sc-128.png"
   },
   "permissions": [
-    "storage",
-    "tabs",
-    "https://trello.com/*/*",
-    "https://scumcoon.firebaseapp.com/*/*"
+    "https://trello.com/*",
+    "https://scumcoon.firebaseapp.com/*"
   ],
 
   "content_scripts": [{
-    "matches": ["https://trello.com/*/*"],
+    "matches": ["https://trello.com/*"],
     "js": [
       "bower_components/firebase/firebase.js",
       "bower_components/firebase/firebase-app.js",
@@ -31,8 +29,5 @@
 
   "web_accessible_resources": [
     "src/*"
-  ],
-
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
-
+  ]
 }

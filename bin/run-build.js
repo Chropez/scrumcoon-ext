@@ -4,7 +4,7 @@ const path = require('path');
 
 let archive = archiver('zip');
 const dist = path.join(__dirname, '/../dist');
-const journalenCoonZip = path.join(dist + '/JournalenCoon.zip');
+const journalenCoonZip = path.join(dist + '/scrumcoon-ext.zip');
 
 if (!fs.existsSync(dist)){
     fs.mkdirSync(dist);
